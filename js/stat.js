@@ -1,4 +1,4 @@
-'use stict';
+'use strict';
 
 var WIDTH_CLOUD = 420;
 var HEIGHT_CLOUD = 270;
@@ -11,7 +11,7 @@ var HEIGHT_BAR = 150;
 var BAR_GAP = 50;
 var TEXT_X = CLOUD_X + BAR_GAP;
 var TEXT_Y = 265;
-var TEXT_GAP = 15;
+// var TEXT_GAP = 15;
 
 var getRandomNumber = function (min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -22,18 +22,17 @@ var getMaxElement = function (arr) {
 };
 
 var wrapText = function (ctx, text, marginLeft, marginTop, maxWidth, lineHeight) {
-  var words = text.split(" ");
+  var words = text.split(' ');
   var countWords = words.length;
-  var line = "";
+  var line = '';
   for (var n = 0; n < countWords; n++) {
-    var testLine = line + words[n] + " ";
+    var testLine = line + words[n] + ' ';
     var testWidth = ctx.measureText(testLine).width;
     if (testWidth > maxWidth) {
       ctx.fillText(line, marginLeft, marginTop);
-      line = words[n] + " ";
+      line = words[n] + ' ';
       marginTop += lineHeight;
-    }
-    else {
+    } else {
       line = testLine;
     }
   }
@@ -41,13 +40,13 @@ var wrapText = function (ctx, text, marginLeft, marginTop, maxWidth, lineHeight)
 };
 
 var createMessage = function (ctx, x, y) {
-  var text = "Ура вы победили! " + "Список результатов: ";
+  var text = 'Ура вы победили! ' + 'Список результатов: ';
   var lineHeight = 25;
   var marginLeft = x;
   var marginTop = y;
   var maxWidth = 230;
 
-  ctx.font = "16px PT Mono";
+  ctx.font = '16px PT Mono';
   ctx.fillStyle = '#000';
 
   wrapText(ctx, text, marginLeft, marginTop, maxWidth, lineHeight);
@@ -66,7 +65,7 @@ window.renderStatistics = function (ctx, names, times) {
   var maxTime = getMaxElement(times);
 
   names.forEach(function (player, i) {
-    if (player == 'Вы') {
+    if (player === 'Вы') {
       ctx.fillStyle = 'rgba(255, 0, 0, 1)';
     } else {
       ctx.fillStyle = 'hsl(240,' + getRandomNumber(0, 100) + '%,' + getRandomNumber(10, 90) + '%)';

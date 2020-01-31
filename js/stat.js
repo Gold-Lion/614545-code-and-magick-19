@@ -48,7 +48,7 @@ window.renderStatistics = (ctx, names, times) => {
   const minTime = getMinElement(times);
 
   names.forEach((player, i) => {
-    ctx.fillStyle = (player === 'Вы') ? 'rgba(255, 0, 0, 1)' : 'hsl(240,' + getRandomNumber(0, 100) + '%,' + getRandomNumber(10, 90) + '%)';
+    ctx.fillStyle = (player === 'Вы') ? 'rgba(255, 0, 0, 1)' : `hsl(240, ${getRandomNumber(0, 100)}%, ${getRandomNumber(10, 90)}%)`;
     ctx.fillRect(CLOUD_X + BAR_GAP + (WIDTH_BAR + BAR_GAP) * i, TEXT_Y - FONT_GAP + MINI_GAP, WIDTH_BAR, -(HEIGHT_BAR * times[i]) / maxTime);
     ctx.fillStyle = '#000';
     ctx.fillText(player, TEXT_X + (WIDTH_BAR + BAR_GAP) * i, TEXT_Y + MINI_GAP);
@@ -57,7 +57,7 @@ window.renderStatistics = (ctx, names, times) => {
 
   let message = (Math.round(times[names.indexOf('Вы')] === minTime)) ?
     'Ура Вы победили!' :
-    'Жаль, но Вы проиграли 😢\n' + names[times.indexOf(minTime)] + ' был(а), быстрее Вас!';
+    `Жаль, но Вы проиграли 😢\n${names[times.indexOf(minTime)]} был(а), быстрее Вас!`;
 
-  createMessage(ctx, message + '\nСписок результатов:');
+  createMessage(ctx, `${message}\nСписок результатов:`);
 };

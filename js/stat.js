@@ -56,7 +56,7 @@ window.renderStatistics = (ctx, names, times) => {
   });
 
   let message = (Math.round(times[names.indexOf('Вы')] === minTime)) ?
-    'Ура Вы победили!' :
+    `Ура Вы победили! Ваш результат ${times[names.indexOf('Вы')]} мс.`:
     `Жаль, но Вы проиграли 😢\n${names[times.indexOf(minTime)]} был(а), быстрее Вас!`;
 
   createMessage(ctx, `${message}\nСписок результатов:`);

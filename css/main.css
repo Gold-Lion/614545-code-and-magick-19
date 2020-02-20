@@ -1019,3 +1019,33 @@ input[type=radio]:checked + .review-mark-label
 
     opacity: 0;
 }
+
+@keyframes error {
+  0% {
+    top: -200px;
+  }
+  100% {
+    top: 50px;
+  }
+}
+
+.error-block {
+  position: fixed;
+  top: 50px;
+  left: 50%;
+  z-index: 1000;
+  width: 60%;
+  padding: 50px 20px;
+  color: #ff0000;
+  text-align: center;
+  background-color: #ececec;
+  border-radius: 10px;
+  transform: translateX(-50%);
+  animation: error 2s ease-in-out;
+}
+
+.error-text {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 20px;
+}

@@ -1,59 +1,57 @@
 'use strict';
 
 (function () {
+  var TIMEOUT_IN_MS = 10000;
   var StatusCode = {
     OK: 200,
-    NotFoud: 404
+    NOT_FOUND_ERROR: 404,
+    SERVER_ERROR: 500
   };
-  var UrlAddress = {
+  var URL_METHOD = {
     POST: 'https://js.dump.academy/code-and-magick',
     GET: 'https://js.dump.academy/code-and-magick/data'
   };
-  var TIMEOUT_IN_MS = 10000;
 
-  var load = (onLoad, onError) => {
+  var getHttpRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();
-
     xhr.responseType = 'json';
-
-    xhr.addEventListener('load', () => {
-      if (xhr.status === StatusCode.OK) {
-        onLoad(xhr.response);
-      } else if (xhr.status === StatusCode.NotFoud) {
-        onError('Статус ошибки: ' + xhr.status + '. По указанному URL ничего не найденно!')
-      } else {
-        onError('Статус ошибки: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    })
-
-    xhr.addEventListener('error', () => {
-      onError('Произошла ошибка соединения');
-    })
-
-    xhr.addEventListener('timeout', () => {
-      onError('Ошибка. Запрос не успел выполниться за ' + xhr.timeout + ' мс. Пожалуйста перезагрузите страницу!');
-    })
-
     xhr.timeout = TIMEOUT_IN_MS;
 
-    xhr.open('GET', UrlAddress.GET);
+    xhr.addEventListener('load', function () {
+      switch (xhr.status) {
+        case StatusCode.OK:
+          onLoad(xhr.response);
+          break;
+        case StatusCode.NOT_FOUND_ERROR:
+          onError('Ошибка 404. Сервер не может найти запрашиваемый ресурс');
+          break;
+        case StatusCode.SERVER_ERROR:
+          onError('Внутренняя ошибка сервера');
+          break;
+        default:
+          onError('Ошибка. Статус ошибки: ' + xhr.status + ' ' + xhr.statusText);
+          break;
+      }
+    });
+    xhr.addEventListener('error', function () {
+      onError('Произошла ошибка соединения');
+    });
+    xhr.addEventListener('timeout', function () {
+      onError('Ошибка. Запрос не успел выполниться за ' + xhr.timeout / 1000 + ' сек. Пожалуйста перезагрузите страницу!');
+    });
+
+    return xhr;
+  };
+
+  var load = function (onLoad, onError) {
+    var xhr = getHttpRequest(onLoad, onError);
+    xhr.open('GET', URL_METHOD.GET);
     xhr.send();
   };
 
-  var save = (data, onLoad, onError) => {
-    var xhr = new XMLHttpRequest();
-
-    xhr.responseType = 'json';
-
-    xhr.addEventListener('load', function () {
-      if (xhr.status === StatusCode.OK) {
-        onLoad(xhr.response);
-      } else {
-        onError('Статус ошибки: ' + xhr.status + ' ' + xhr.statusText);
-      }
-    });
-
-    xhr.open('POST', UrlAddress.POST);
+  var save = function (data, onLoad, onError) {
+    var xhr = getHttpRequest(onLoad, onError);
+    xhr.open('POST', URL_METHOD.POST);
     xhr.send(data);
   };
 

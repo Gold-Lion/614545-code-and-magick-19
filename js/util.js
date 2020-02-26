@@ -5,6 +5,10 @@
     var ENTER_KEYCODE = 13;
     var COUT_SIMILAR_WIZARDS = 4;
 
+    var debounce = () => {
+
+    };
+
     var isEscEvent = (evt, action) => {
       if (evt.keyCode === ESC_KEYCODE) {
         action();
